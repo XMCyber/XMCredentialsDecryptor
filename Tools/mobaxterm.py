@@ -113,15 +113,18 @@ class MobaXTerm():
 
     def run(self):
             print("----Running MobaXTerm Password Decryptor----\n")
-            Entropy, ValueType = winreg.QueryValueEx(
-                winreg.OpenKey(
-                    winreg.HKEY_CURRENT_USER,
-                    'Software\\Mobatek\\MobaXterm'
-                ),
-                'SessionP'
-            );
-            assert (ValueType == winreg.REG_SZ)
-
+            try:
+                Entropy, ValueType = winreg.QueryValueEx(
+                    winreg.OpenKey(
+                        winreg.HKEY_CURRENT_USER,
+                        'Software\\Mobatek\\MobaXterm'
+                    ),
+                    'SessionP'
+                );
+                assert (ValueType == winreg.REG_SZ)
+            except FileNotFoundError:
+                return 0
+                
             try:
                 Key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, 'Software\\Mobatek\\MobaXterm\\M')
                 print('MasterPasswordHash'.center(48, '-'))
