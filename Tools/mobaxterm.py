@@ -126,9 +126,18 @@ class MobaXTerm():
                 return 0
                 
             try:
-                Key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, 'Software\\Mobatek\\MobaXterm\\M')
+                Key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, 'Software\\Mobatek\\MobaXterm\\M', access=winreg.KEY_READ | winreg.KEY_WOW64_64KEY)
+                
+                import socket 
+                
+                #debug 
+                #print("Key : ", Key)
+                #print("login : ", os.getlogin())
+                
+                #print("node : ", socket.getfqdn().split('.', 1)[1])
+                
                 print('MasterPasswordHash'.center(48, '-'))
-                Value, ValueType = winreg.QueryValueEx(Key, os.getlogin() + '@' + platform.node())
+                Value, ValueType = winreg.QueryValueEx(Key, os.getlogin() + '@' + socket.getfqdn().split('.', 1)[1]) # platform.node()) is not working, in my case there is local domain name used
                 MasterPasswordHashEncrypted = bytes.fromhex('01000000d08c9ddf0115d1118c7a00c04fc297eb') + b64decode(Value)
                 MasterPasswordHash = CryptUnprotectData(MasterPasswordHashEncrypted, bytes(Entropy, 'utf-8'))
                 if not MasterPasswordHash:
