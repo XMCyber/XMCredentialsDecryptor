@@ -10,7 +10,7 @@ You can read the full explanation on how they are decrypted [here](https://mediu
 Run this command:
 ```
 cd main
-pip3 install -r requirement.txt
+pip3 install -r requirements.txt
 ```
 
 ## Get started
