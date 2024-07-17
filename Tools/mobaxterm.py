@@ -128,7 +128,7 @@ class MobaXTerm():
             try:
                 Key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, 'Software\\Mobatek\\MobaXterm\\M')
                 print('MasterPasswordHash'.center(48, '-'))
-                Value, ValueType = winreg.QueryValueEx(Key, os.getlogin() + '@' + platform.node())
+                Value, ValueType = winreg.QueryValueEx(Key, f"{os.getlogin().replace(" ", ""}@{platform.node()}")
                 MasterPasswordHashEncrypted = bytes.fromhex('01000000d08c9ddf0115d1118c7a00c04fc297eb') + b64decode(Value)
                 MasterPasswordHash = CryptUnprotectData(MasterPasswordHashEncrypted, bytes(Entropy, 'utf-8'))
                 if not MasterPasswordHash:
